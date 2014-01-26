@@ -139,7 +139,7 @@ function EasyEnter:LocalPlayerInput(args)
 			if args.input == self.gamepadScrollUp then self:Scroll(true) self.inputTimeoutTimer:Restart() escapeKey = true
 			elseif args.input == self.gamepadScrollDown then self:Scroll(false) self.inputTimeoutTimer:Restart() escapeKey = true end
 		else
-			if args.input == self.scrollUp then self:Scroll(true) escapeKey = true Chat:Print(tostring(escapeKey), Color(255, 0, 0))
+			if args.input == self.scrollUp then self:Scroll(true) escapeKey = true
 			elseif args.input == self.scrollDown then self:Scroll(false) escapeKey = true end
 		end
 		if not escapeKey and self.scrollIgnore[args.input] then escapeKey = true end
