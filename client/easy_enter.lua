@@ -20,6 +20,11 @@ class "EasyEnter"
 
 function EasyEnter:__init()
 	--if LocalPlayer:GetSteamId().string ~= "STEAM_0:0:16870054" then return end
+	
+	self.scrollIgnore = {
+		[Action.NextWeapon] = true,
+		[Action.PrevWeapon] = true
+	}
 
 	self.enterVehicleKey = Action.EnterVehicle
 	self.scrollUp = Action.GuiPDAZoomIn
@@ -126,20 +131,24 @@ function EasyEnter:LocalPlayerInput(args)
 		return false
 	end
 	
+	local escapeKey = false
+	
 	-- Menu visible, check for scroll events
 	if self.listBox:GetVisible() then
 		if Game:GetSetting(GameSetting.GamepadInUse) == 1 and self.inputTimeoutTimer:GetMilliseconds() >= self.inputTimeout then
-			if args.input == self.gamepadScrollUp then self:Scroll(true) self.inputTimeoutTimer:Restart()
-			elseif args.input == self.gamepadScrollDown then self:Scroll(false) self.inputTimeoutTimer:Restart() end
+			if args.input == self.gamepadScrollUp then self:Scroll(true) self.inputTimeoutTimer:Restart() escapeKey = true
+			elseif args.input == self.gamepadScrollDown then self:Scroll(false) self.inputTimeoutTimer:Restart() escapeKey = true end
 		else
-			
-			if args.input == self.scrollUp then self:Scroll(true)
-			elseif args.input == self.scrollDown then self:Scroll(false) end
+			if args.input == self.scrollUp then self:Scroll(true) escapeKey = true Chat:Print(tostring(escapeKey), Color(255, 0, 0))
+			elseif args.input == self.scrollDown then self:Scroll(false) escapeKey = true end
 		end
+		if not escapeKey and self.scrollIgnore[args.input] then escapeKey = true end
 	end
 	
 	-- Reset last press timer, and ignore use key
-	if args.input == Action.UseItem and self.listBox:GetVisible() then self.lastPressTimer:Restart() return false end
+	if args.input == Action.UseItem and self.listBox:GetVisible() then self.lastPressTimer:Restart() escapeKey = true end
+	
+	if escapeKey then return false end
 end
 
 function EasyEnter:Scroll(up)
