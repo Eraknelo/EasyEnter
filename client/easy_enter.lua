@@ -44,7 +44,7 @@ function EasyEnter:__init()
 	-- Create GUI
 	self.listBox = ListBox.Create()
 	self.listBox:SetVisible(false)
-	self.listBox:SetSize(Vector2(100, 160))
+	self.listBox:SetSize(Vector2(100, 148))
 	self.listBox:SetPositionRel(Vector2(0.6, 0.5) - (self.listBox:GetSizeRel() / 2))
 	
 	self.rowItems = {
